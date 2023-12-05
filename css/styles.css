@@ -1,0 +1,21 @@
+div.ruuvi-api-sensors .name {
+  width: 200px;
+}
+div.ruuvi-api-sensors .icon {
+  margin-right: 10px;
+}
+div.ruuvi-api-sensors .date {
+  width: 100px;
+  font-size: 14px;
+}
+div.ruuvi-api-sensors .measurement {
+  width: 100px;
+  padding: 4px;
+  display: inline-table;
+}
+div.ruuvi-api-sensors .measurement.wide {
+  width: 160px;
+}
+div.ruuvi-api-sensors .paddingTop {
+  padding-top: 8px;
+}/*# sourceMappingURL=styles.css.map */
