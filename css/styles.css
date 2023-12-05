@@ -1,5 +1,6 @@
 div.ruuvi-api-sensors .name {
   width: 200px;
+  text-align: left;
 }
 div.ruuvi-api-sensors .icon {
   margin-right: 10px;
