@@ -119,10 +119,12 @@ Module.register('MMM-ruuvi-api-sensors', {
             self.config.humidityIcon +
             '"></i></span>';
 
-        self.sensorsData.forEach((sensor) => {
+        const sensorHTMLs = [];
+        self.sensorsData.forEach((sensor, index) => {
             const sensorName =
-                '<div class="name bright">' + sensor.name + '</div>';
-            const time = '<div class="date">' + sensor.time + '</div>';
+                '<div class="measurement bright">' + sensor.name + '</div>';
+            const time =
+                '<div class="measurement smallFont">' + sensor.time + '</div>';
             const temperature =
                 '<div class="measurement bright" ' +
                 self._getMeasurementValueStyle(sensor.temperature) +
@@ -145,10 +147,26 @@ Module.register('MMM-ruuvi-api-sensors', {
                 self._formatDecimal(sensor.pressure, 1) +
                 ' hPa</div>';
             var sensorHTML = document.createElement('div');
+            sensorHTML.className =
+                (index + 1) % 2 === 0 ? 'sensor marginLeft' : 'sensor';
             sensorHTML.innerHTML =
                 sensorName + time + temperature + humitidy + pressure;
-            wrapper.appendChild(sensorHTML);
+            sensorHTMLs.push(sensorHTML);
         });
+
+        for (var i = 0; i < sensorHTMLs.length; i += 2) {
+            var sensorsContainer = document.createElement('div');
+            sensorsContainer.className = 'sensors-container';
+            sensorsContainer.appendChild(sensorHTMLs[i]);
+            if (sensorHTMLs.length - 1 >= i + 1) {
+                sensorsContainer.appendChild(sensorHTMLs[i + 1]);
+            } else {
+                var sensorHTML = document.createElement('div');
+                sensorHTML.className = 'sensor marginLeft noborder';
+                sensorsContainer.appendChild(sensorHTML);
+            }
+            wrapper.appendChild(sensorsContainer);
+        }
 
         return wrapper;
     },
@@ -198,7 +216,6 @@ Module.register('MMM-ruuvi-api-sensors', {
             case 'SENSORS_RESPONSE':
                 this.scheduleNextFetch();
                 this.sensorsData = payload.data;
-                console.log(payload);
                 this.updateDom();
                 break;
         }
