@@ -5,9 +5,13 @@ The `MMM-ruuvi-api-sensors` module fetches Ruuvi sensors data from User API (htt
 
 ## Screenshot
 
-- Ruuvi api sensors screenshot
+### Col style (default)
 
-![Ruuvi api sensors screenshot](screenshot.png)
+![Ruuvi api sensors screenshot, col style](screenshot_col.png)
+
+# Row style
+
+![Ruuvi api sensors screenshot, row style](screenshot_row.png)
 
 ## Using the module
 
@@ -27,7 +31,8 @@ modules: [{
         apiUrl: 'https://network.ruuvi.com',
         token: '<TOKEN>',
         negativeColor: '#4800FF',
-        highlightNegative: true
+        highlightNegative: true,
+        uiStyle: 'col'
 	}
 }]
 ````
@@ -46,4 +51,5 @@ The following properties can be configured:
 | `apiUrl`						| `https://network.ruuvi.com` | Api url
 | `token`                       |                             | **Necessary** own token, read more: https://docs.ruuvi.com/communication/cloud/user-api
 | `negativeColor`               | `#4800FF`                   | Highlight negative value this color
-| `highlightNegative`           | `true`                      | Higlight negative measurements
+| `highlightNegative`           | `true`                      | Higlight negative measurements true/false
+| `uiStyle`                     | `col`                       | UI style `col` or `row`

@@ -89,6 +89,7 @@ Module.register('MMM-ruuvi-api-sensors', {
      * @returns {object} HTML wrapper
      */
     getColDom: function () {
+        const self = this;
         var wrapper = document.createElement('div');
 
         if (!self.config.sensor === null) {
