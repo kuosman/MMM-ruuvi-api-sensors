@@ -19,6 +19,7 @@ Module.register('MMM-ruuvi-api-sensors', {
         token: '',
         negativeColor: '#4800FF',
         highlightNegative: true,
+        uiStyle: 'col', // col or row style
     },
 
     sensorsData: null,
@@ -84,27 +85,24 @@ Module.register('MMM-ruuvi-api-sensors', {
     },
 
     /**
-     * Gets dom
-     *
-     * @function getDom
-     * @returns {object} html wrapper
+     * Gets column dom.
+     * @returns {object} HTML wrapper
      */
-    getDom: function () {
-        const self = this;
+    getColDom: function () {
         var wrapper = document.createElement('div');
 
         if (!self.config.sensor === null) {
             wrapper.innerHTML = this.translate('configEmpty') + this.name + '.';
-            wrapper.className = 'ruuvi-api-sensors dimmed light small';
+            wrapper.className = 'ruuvi-api-sensors col dimmed light small';
             return wrapper;
         }
 
         if (self.sensorsData === null) {
             wrapper.innerHTML = this.translate('loading');
-            wrapper.className = 'ruuvi-api-sensors dimmed light small';
+            wrapper.className = 'ruuvi-api-sensors col dimmed light small';
             return wrapper;
         }
-        wrapper.className = 'ruuvi-api-sensors light small';
+        wrapper.className = 'ruuvi-api-sensors col light small';
 
         var temperatureIcon =
             '<span class="icon"><i class="fas fa-' +
@@ -169,6 +167,88 @@ Module.register('MMM-ruuvi-api-sensors', {
         }
 
         return wrapper;
+    },
+    /**
+     * Gets row dom.
+     * @returns {object} HTML wrapper
+     */
+    getRowDom: function () {
+        const self = this;
+        var wrapper = document.createElement('div');
+
+        if (!self.config.sensor === null) {
+            wrapper.innerHTML = this.translate('configEmpty') + this.name + '.';
+            wrapper.className = 'ruuvi-api-sensors row dimmed light small';
+            return wrapper;
+        }
+
+        if (self.sensorsData === null) {
+            wrapper.innerHTML = this.translate('loading');
+            wrapper.className = 'ruuvi-api-sensors row dimmed light small';
+            return wrapper;
+        }
+        wrapper.className = 'ruuvi-api-sensors row light small';
+
+        var temperatureIcon =
+            '<span class="icon"><i class="fas fa-' +
+            self.config.temperatureIcon +
+            '"></i></span>';
+        var pressureIcon =
+            '<span class="icon"><i class="fas fa-' +
+            self.config.pressureIcon +
+            '"></i></span>';
+        var humidityIcon =
+            '<span class="icon"><i class="fas fa-' +
+            self.config.humidityIcon +
+            '"></i></span>';
+
+        self.sensorsData.forEach((sensor) => {
+            const sensorName =
+                '<div class="name bright">' + sensor.name + '</div>';
+            const time = '<div class="date">' + sensor.time + '</div>';
+            const temperature =
+                '<div class="measurement bright" ' +
+                self._getMeasurementValueStyle(sensor.temperature) +
+                '>' +
+                temperatureIcon +
+                self._formatDecimal(sensor.temperature, 1) +
+                ' &#8451;</div>';
+            const humitidy =
+                '<div class="measurement bright" ' +
+                self._getMeasurementValueStyle(sensor.humidity) +
+                '>' +
+                humidityIcon +
+                self._formatDecimal(sensor.humidity, 1) +
+                ' %</div>';
+            const pressure =
+                '<div class="measurement wide bright" ' +
+                self._getMeasurementValueStyle(sensor.pressure) +
+                '>' +
+                pressureIcon +
+                self._formatDecimal(sensor.pressure / 100, 1) +
+                ' hPa</div>';
+            var sensorHTML = document.createElement('div');
+            sensorHTML.innerHTML =
+                sensorName + time + temperature + humitidy + pressure;
+            wrapper.appendChild(sensorHTML);
+        });
+
+        return wrapper;
+    },
+
+    /**
+     * Gets dom
+     *
+     * @function getDom
+     * @returns {object} html wrapper
+     */
+    getDom: function () {
+        const self = this;
+        if (self.config.uiStyle === 'row') {
+            return self.getRowDom();
+        } else {
+            return self.getColDom();
+        }
     },
 
     /**

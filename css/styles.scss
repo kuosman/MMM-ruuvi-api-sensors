@@ -1,27 +1,56 @@
 div.ruuvi-api-sensors {
-    div.sensors-container {
-        display: flex;
-        width: 360px;
-        margin-top: 8px;
-    }
-    div.sensor {
-        border-radius: 8px;
-        border: 1px solid rgba(255,255,255,0.5);
-        width: 180px;
-        &.noborder {
-            border: none;
+    /* Row styles */
+    &.row {
+        .name {
+            width: 200px;
+            text-align: left;
         }
-        &.marginLeft {
-            margin-left: 8px;
+        .icon {
+            margin-right: 10px;
         }
-        div.measurement {
+        .date {
+            width: 100px;
+            font-size: 14px;
+        }
+        .measurement {
+            width: 100px;
             padding: 4px;
-            text-align: center;
-            &.smallFont {
-                font-size: 16px;
+            display: inline-table;
+            &.wide {
+                width: 160px;
             }
-            span.icon {
-                margin-right:8px;
+        }
+        .paddingTop {
+            padding-top: 8px;
+        }
+    }
+
+    /* Column styles */
+    &.col {
+        div.sensors-container {
+            display: flex;
+            width: 360px;
+            margin-top: 8px;
+        }
+        div.sensor {
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.5);
+            width: 180px;
+            &.noborder {
+                border: none;
+            }
+            &.marginLeft {
+                margin-left: 8px;
+            }
+            div.measurement {
+                padding: 4px;
+                text-align: center;
+                &.smallFont {
+                    font-size: 16px;
+                }
+                span.icon {
+                    margin-right:8px;
+                }
             }
         }
     }
