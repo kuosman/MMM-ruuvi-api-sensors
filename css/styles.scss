@@ -6,7 +6,7 @@ div.ruuvi-api-sensors {
     }
     div.sensor {
         border-radius: 8px;
-        border: 1px solid white;
+        border: 1px solid rgba(255,255,255,0.5);
         width: 180px;
         &.noborder {
             border: none;
@@ -23,8 +23,6 @@ div.ruuvi-api-sensors {
             span.icon {
                 margin-right:8px;
             }
-            font-size: 22px;
-            font-weight: 500;
         }
     }
 }

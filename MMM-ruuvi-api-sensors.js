@@ -144,7 +144,7 @@ Module.register('MMM-ruuvi-api-sensors', {
                 self._getMeasurementValueStyle(sensor.pressure) +
                 '>' +
                 pressureIcon +
-                self._formatDecimal(sensor.pressure, 1) +
+                self._formatDecimal(sensor.pressure / 100, 1) +
                 ' hPa</div>';
             var sensorHTML = document.createElement('div');
             sensorHTML.className =

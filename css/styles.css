@@ -5,7 +5,7 @@ div.ruuvi-api-sensors div.sensors-container {
 }
 div.ruuvi-api-sensors div.sensor {
   border-radius: 8px;
-  border: 1px solid white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   width: 180px;
 }
 div.ruuvi-api-sensors div.sensor.noborder {
@@ -17,8 +17,6 @@ div.ruuvi-api-sensors div.sensor.marginLeft {
 div.ruuvi-api-sensors div.sensor div.measurement {
   padding: 4px;
   text-align: center;
-  font-size: 22px;
-  font-weight: 500;
 }
 div.ruuvi-api-sensors div.sensor div.measurement.smallFont {
   font-size: 16px;
