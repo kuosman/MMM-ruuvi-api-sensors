@@ -1,6 +1,9 @@
 div.ruuvi-api-sensors {
     /* Row styles */
     &.row {
+        .sensor {
+            margin-top: 8px;
+        }
         .name {
             width: 200px;
             text-align: left;
@@ -9,15 +12,16 @@ div.ruuvi-api-sensors {
             margin-right: 10px;
         }
         .date {
-            width: 100px;
-            font-size: 14px;
+            font-size: 16px;
+            text-align: left;
         }
         .measurement {
             width: 100px;
             padding: 4px;
             display: inline-table;
+            text-align: left;
             &.wide {
-                width: 160px;
+                width: 136px;
             }
         }
         .paddingTop {

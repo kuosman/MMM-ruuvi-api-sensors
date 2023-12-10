@@ -2,6 +2,9 @@ div.ruuvi-api-sensors {
   /* Row styles */
   /* Column styles */
 }
+div.ruuvi-api-sensors.row .sensor {
+  margin-top: 8px;
+}
 div.ruuvi-api-sensors.row .name {
   width: 200px;
   text-align: left;
@@ -10,16 +13,17 @@ div.ruuvi-api-sensors.row .icon {
   margin-right: 10px;
 }
 div.ruuvi-api-sensors.row .date {
-  width: 100px;
-  font-size: 14px;
+  font-size: 16px;
+  text-align: left;
 }
 div.ruuvi-api-sensors.row .measurement {
   width: 100px;
   padding: 4px;
   display: inline-table;
+  text-align: left;
 }
 div.ruuvi-api-sensors.row .measurement.wide {
-  width: 160px;
+  width: 136px;
 }
 div.ruuvi-api-sensors.row .paddingTop {
   padding-top: 8px;

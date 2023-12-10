@@ -228,6 +228,7 @@ Module.register('MMM-ruuvi-api-sensors', {
                 self._formatDecimal(sensor.pressure / 100, 1) +
                 ' hPa</div>';
             var sensorHTML = document.createElement('div');
+            sensorHTML.className = 'sensor';
             sensorHTML.innerHTML =
                 sensorName + time + temperature + humitidy + pressure;
             wrapper.appendChild(sensorHTML);
