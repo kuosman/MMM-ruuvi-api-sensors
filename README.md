@@ -9,7 +9,7 @@ The `MMM-ruuvi-api-sensors` module fetches Ruuvi sensors data from User API (htt
 
 ![Ruuvi api sensors screenshot, col style](screenshot_col.png)
 
-# Row style
+### Row style
 
 ![Ruuvi api sensors screenshot, row style](screenshot_row.png)
 
