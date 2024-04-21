@@ -27,6 +27,7 @@ modules: [{
 		temperatureIcon: 'temperature-half',
         pressureIcon: 'wind',
         humidityIcon: 'droplet',
+        batteryEmptyIcon: 'battery-half',
         updateInterval: 5 * 1000 * 60, // every 5 minutes
         apiUrl: 'https://network.ruuvi.com',
         token: '<TOKEN>',
@@ -47,6 +48,7 @@ The following properties can be configured:
 | `temperatureIcon`			    | `temperature-half`          | Temperature icon. See others: https://fontawesome.com/icons?d=gallery
 | `pressureIcon`				| `wind`                      | Pressure icon. See others: https://fontawesome.com/icons?d=gallery
 | `humidityIcon`				| `droplet`                   | Humidity icon. See others: https://fontawesome.com/icons?d=gallery
+| `batteryEmptyIcon`			| `battery-half`              | Battery empty icon. See others: https://fontawesome.com/icons?d=gallery
 | `updateInterval`				| `30000`                     | Update interval in milliseconds. Limited minumum value for 1 minute because API blocks faster updates.
 | `apiUrl`						| `https://network.ruuvi.com` | Api url
 | `token`                       |                             | **Necessary** own token, read more: https://docs.ruuvi.com/communication/cloud/user-api

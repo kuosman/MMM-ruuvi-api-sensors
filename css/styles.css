@@ -12,6 +12,9 @@ div.ruuvi-api-sensors.row .name {
 div.ruuvi-api-sensors.row .icon {
   margin-right: 10px;
 }
+div.ruuvi-api-sensors.row .icon2 {
+  margin-left: 10px;
+}
 div.ruuvi-api-sensors.row .date {
   font-size: 16px;
   text-align: left;
@@ -53,4 +56,7 @@ div.ruuvi-api-sensors.col div.sensor div.measurement.smallFont {
 }
 div.ruuvi-api-sensors.col div.sensor div.measurement span.icon {
   margin-right: 8px;
+}
+div.ruuvi-api-sensors.col div.sensor div.measurement span.icon2 {
+  margin-left: 8px;
 }/*# sourceMappingURL=styles.css.map */
