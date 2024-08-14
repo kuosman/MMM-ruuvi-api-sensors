@@ -26,7 +26,7 @@ Module.register('MMM-ruuvi-api-sensors', {
     sensorsData: null,
     updateTimer: null,
     batteryLimit: 2420, // if below this value, show battery empty warning,
-    identifier: new UUID(),
+    identifier: Date.now(),
 
     /**
      * Gets styles
