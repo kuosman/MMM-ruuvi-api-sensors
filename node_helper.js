@@ -263,7 +263,7 @@ module.exports = NodeHelper.create({
      * @param {object} payload payload
      */
     socketNotificationReceived: function (notification, payload) {
-        if (notification === 'GET_SENSORS_DATA') {
+        if (notification === 'MMM_RUUVI_API_SENSORS_GET_SENSORS_DATA') {
             this.fetchSensorsData(
                 payload.config.apiUrl,
                 payload.config.token,
@@ -283,7 +283,7 @@ module.exports = NodeHelper.create({
     fetchSensorsData(apiUrl, token, identifier) {
         var self = this;
         if (token === '') {
-            self.sendSocketNotification('SENSORS_RESPONSE', {
+            self.sendSocketNotification('MMM_RUUVI_API_SENSORS_SENSORS_RESPONSE', {
                 data: [],
             });
         }

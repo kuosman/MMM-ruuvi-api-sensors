@@ -333,6 +333,7 @@ Module.register('MMM-ruuvi-api-sensors', {
      * @param {object} payload payload
      */
     socketNotificationReceived: function (notification, payload) {
+        console.log(payload.identifier, this.identifier, payload);
         if (payload.identifier !== this.identifier) return;
 
         switch (notification) {
