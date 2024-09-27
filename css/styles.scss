@@ -5,6 +5,7 @@ div.ruuvi-api-sensors {
             margin-top: 8px;
             &.large {
                 font-size: 32px;
+                margin-top: 16px;
             }
         }
         .name {
@@ -31,7 +32,7 @@ div.ruuvi-api-sensors {
             text-align: left;
 
             &.large {
-                font-size: 32px;
+                font-size: 24px;
             }
         }
         .measurement {

@@ -7,6 +7,7 @@ div.ruuvi-api-sensors.row .sensor {
 }
 div.ruuvi-api-sensors.row .sensor.large {
   font-size: 32px;
+  margin-top: 16px;
 }
 div.ruuvi-api-sensors.row .name {
   width: 200px;
@@ -32,7 +33,7 @@ div.ruuvi-api-sensors.row .date {
   text-align: left;
 }
 div.ruuvi-api-sensors.row .date.large {
-  font-size: 32px;
+  font-size: 24px;
 }
 div.ruuvi-api-sensors.row .measurement {
   width: 100px;
