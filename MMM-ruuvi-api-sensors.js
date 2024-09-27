@@ -234,7 +234,9 @@ Module.register('MMM-ruuvi-api-sensors', {
             '"></i></span>';
 
         var batteryEmptyIcon =
-            '<span class="battery-empty-icon"><i class="fas fa-' +
+            '<span class="battery-empty-icon ' +
+            (self.config.large ? 'large' : '') +
+            '"><i class="fas fa-' +
             self.config.batteryEmptyIcon +
             '"></i></span>';
 

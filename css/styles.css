@@ -45,6 +45,7 @@ div.ruuvi-api-sensors.row .measurement.wide {
 }
 div.ruuvi-api-sensors.row .measurement.large {
   width: 180px;
+  font-size: 32px;
 }
 div.ruuvi-api-sensors.row .measurement.large.wide {
   width: 200px;
