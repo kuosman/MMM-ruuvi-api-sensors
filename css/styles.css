@@ -14,6 +14,7 @@ div.ruuvi-api-sensors.row .name {
 }
 div.ruuvi-api-sensors.row .name.large {
   width: auto;
+  font-size: 32px;
 }
 div.ruuvi-api-sensors.row .icon {
   margin-right: 10px;

@@ -255,7 +255,7 @@ Module.register('MMM-ruuvi-api-sensors', {
                 '</div>';
             const temperature =
                 '<div class="measurement ' +
-                (self.config.large ? ' large' : '') +
+                (self.config.large ? 'large' : '') +
                 ' bright" ' +
                 self._getMeasurementValueStyle(sensor.temperature) +
                 '>' +
@@ -263,14 +263,18 @@ Module.register('MMM-ruuvi-api-sensors', {
                 self._formatDecimal(sensor.temperature, 1) +
                 ' &#8451;</div>';
             const humitidy =
-                '<div class="measurement bright" ' +
+                '<div class="measurement ' +
+                (self.config.large ? 'large' : '') +
+                ' bright" ' +
                 self._getMeasurementValueStyle(sensor.humidity) +
                 '>' +
                 humidityIcon +
                 self._formatDecimal(sensor.humidity, 1) +
                 ' %</div>';
             const pressure =
-                '<div class="measurement wide bright" ' +
+                '<div class="measurement ' +
+                (self.config.large ? 'large' : '') +
+                ' wide bright" ' +
                 self._getMeasurementValueStyle(sensor.pressure) +
                 '>' +
                 pressureIcon +
