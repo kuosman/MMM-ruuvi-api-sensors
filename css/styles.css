@@ -36,6 +36,9 @@ div.ruuvi-api-sensors.col div.sensors-container {
   width: 360px;
   margin-top: 8px;
 }
+div.ruuvi-api-sensors.col div.sensors-container.large {
+  width: auto;
+}
 div.ruuvi-api-sensors.col div.sensor {
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -59,4 +62,13 @@ div.ruuvi-api-sensors.col div.sensor div.measurement span.icon {
 }
 div.ruuvi-api-sensors.col div.sensor div.measurement span.icon2 {
   margin-left: 8px;
+}
+div.ruuvi-api-sensors.col div.sensor div.measurement.large {
+  font-size: 32px;
+}
+div.ruuvi-api-sensors.col div.sensor div.measurement.large.smallFont {
+  font-size: 24px;
+}
+div.ruuvi-api-sensors.col div.sensor.large {
+  width: 320px;
 }/*# sourceMappingURL=styles.css.map */

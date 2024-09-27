@@ -21,6 +21,7 @@ Module.register('MMM-ruuvi-api-sensors', {
         negativeColor: '#4800FF',
         highlightNegative: true,
         uiStyle: 'col', // col or row style
+        large: false,
     },
 
     sensorsData: null,
@@ -127,45 +128,55 @@ Module.register('MMM-ruuvi-api-sensors', {
             '"></i></span>';
 
         const sensorHTMLs = [];
+        const measurementClass =
+            'measurement' + (self.config.large ? ' large' : '');
         self.sensorsData.forEach((sensor, index) => {
-            console.log(
-                sensor.name,
-                sensor.battery,
-                self.batteryLimit,
-                sensor.battery > self.batteryLimit
-            );
             const sensorName =
-                '<div class="measurement bright">' +
+                '<div class="' +
+                measurementClass +
+                ' bright">' +
                 (sensor.battery > self.batteryLimit
                     ? sensor.name
                     : sensor.name + batteryEmptyIcon) +
                 '</div>';
             const time =
-                '<div class="measurement smallFont">' + sensor.time + '</div>';
+                '<div class="' +
+                measurementClass +
+                ' smallFont">' +
+                sensor.time +
+                '</div>';
             const temperature =
-                '<div class="measurement bright" ' +
+                '<div class="' +
+                measurementClass +
+                ' bright" ' +
                 self._getMeasurementValueStyle(sensor.temperature) +
                 '>' +
                 temperatureIcon +
                 self._formatDecimal(sensor.temperature, 1) +
                 ' &#8451;</div>';
             const humitidy =
-                '<div class="measurement bright" ' +
+                '<div class="' +
+                measurementClass +
+                ' bright" ' +
                 self._getMeasurementValueStyle(sensor.humidity) +
                 '>' +
                 humidityIcon +
                 self._formatDecimal(sensor.humidity, 1) +
                 ' %</div>';
             const pressure =
-                '<div class="measurement wide bright" ' +
+                '<div class="' +
+                measurementClass +
+                ' wide bright" ' +
                 self._getMeasurementValueStyle(sensor.pressure) +
                 '>' +
                 pressureIcon +
                 self._formatDecimal(sensor.pressure / 100, 1) +
                 ' hPa</div>';
             var sensorHTML = document.createElement('div');
+            const sensorClass = 'sensor' + (self.config.large ? ' large' : '');
             sensorHTML.className =
-                (index + 1) % 2 === 0 ? 'sensor marginLeft' : 'sensor';
+                sensorClass + ((index + 1) % 2 === 0 ? ' marginLeft' : '');
+
             sensorHTML.innerHTML =
                 sensorName + time + temperature + humitidy + pressure;
             sensorHTMLs.push(sensorHTML);
@@ -173,7 +184,8 @@ Module.register('MMM-ruuvi-api-sensors', {
 
         for (var i = 0; i < sensorHTMLs.length; i += 2) {
             var sensorsContainer = document.createElement('div');
-            sensorsContainer.className = 'sensors-container';
+            sensorsContainer.className =
+                'sensors-container' + (self.config.large ? ' large' : '');
             sensorsContainer.appendChild(sensorHTMLs[i]);
             if (sensorHTMLs.length - 1 >= i + 1) {
                 sensorsContainer.appendChild(sensorHTMLs[i + 1]);
@@ -333,7 +345,6 @@ Module.register('MMM-ruuvi-api-sensors', {
      * @param {object} payload payload
      */
     socketNotificationReceived: function (notification, payload) {
-        console.log(payload.identifier, this.identifier, payload);
         if (payload.identifier !== this.identifier) return;
 
         switch (notification) {
