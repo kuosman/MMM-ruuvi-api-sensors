@@ -123,7 +123,7 @@ Module.register('MMM-ruuvi-api-sensors', {
             '"></i></span>';
 
         var batteryEmptyIcon =
-            '<span class="icon2" style="color:#ff6666;font-size:16px;"><i class="fas fa-' +
+            '<span class="battery-empty-icon ' + (self.config.large ? 'large' : '') + '"><i class="fas fa-' +
             self.config.batteryEmptyIcon +
             '"></i></span>';
 
@@ -234,20 +234,29 @@ Module.register('MMM-ruuvi-api-sensors', {
             '"></i></span>';
 
         var batteryEmptyIcon =
-            '<span class="icon2" style="color:#ff6666;font-size:16px;"><i class="fas fa-' +
+            '<span class="battery-empty-icon"><i class="fas fa-' +
             self.config.batteryEmptyIcon +
             '"></i></span>';
 
         self.sensorsData.forEach((sensor) => {
             const sensorName =
-                '<div class="name bright">' +
+                '<div class="name ' +
+                (self.config.large ? 'large' : '') +
+                ' bright">' +
                 (sensor.battery > self.batteryLimit
                     ? sensor.name
                     : sensor.name + batteryEmptyIcon) +
                 '</div>';
-            const time = '<div class="date">' + sensor.time + '</div>';
+            const time =
+                '<div class="date ' +
+                (self.config.large ? 'large' : '') +
+                '">' +
+                sensor.time +
+                '</div>';
             const temperature =
-                '<div class="measurement bright" ' +
+                '<div class="measurement ' +
+                (self.config.large ? ' large' : '') +
+                ' bright" ' +
                 self._getMeasurementValueStyle(sensor.temperature) +
                 '>' +
                 temperatureIcon +
@@ -268,7 +277,8 @@ Module.register('MMM-ruuvi-api-sensors', {
                 self._formatDecimal(sensor.pressure / 100, 1) +
                 ' hPa</div>';
             var sensorHTML = document.createElement('div');
-            sensorHTML.className = 'sensor';
+            sensorHTML.className =
+                'sensor' + (self.config.large ? ' large' : '');
             sensorHTML.innerHTML =
                 sensorName + time + temperature + humitidy + pressure;
             wrapper.appendChild(sensorHTML);

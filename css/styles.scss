@@ -3,20 +3,35 @@ div.ruuvi-api-sensors {
     &.row {
         .sensor {
             margin-top: 8px;
+            &.large {
+                font-size: 32px;
+            }
         }
         .name {
             width: 200px;
             text-align: left;
+            &.large {
+                width: auto;
+            }
         }
         .icon {
             margin-right: 10px;
         }
-        .icon2 {
+        .battery-empty-icon {
             margin-left: 10px;
+            color:#ff6666;
+            font-size:16px;
+            &.large {
+                font-size: 24px;
+            }
         }
         .date {
             font-size: 16px;
             text-align: left;
+
+            &.large {
+                font-size: 32px;
+            }
         }
         .measurement {
             width: 100px;
@@ -25,6 +40,13 @@ div.ruuvi-api-sensors {
             text-align: left;
             &.wide {
                 width: 136px;
+            }
+            &.large {
+                width: 180px;
+
+                &.wide {
+                    width: 200px;
+                }
             }
         }
         .paddingTop {
@@ -62,13 +84,18 @@ div.ruuvi-api-sensors {
                 span.icon {
                     margin-right:8px;
                 }
-                span.icon2 {
-                    margin-left:8px;
-                }
                 &.large {
                     font-size: 32px;
                     &.smallFont {
                         font-size: 24px;
+                    }
+                }
+                span.battery-empty-icon {
+                    margin-left:8px;
+                    color:#ff6666;
+                    font-size:16px;
+                    &.large {
+                        font-size:24px;
                     }
                 }
             }

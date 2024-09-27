@@ -55,3 +55,4 @@ The following properties can be configured:
 | `negativeColor`               | `#4800FF`                   | Highlight negative value this color
 | `highlightNegative`           | `true`                      | Higlight negative measurements true/false
 | `uiStyle`                     | `col`                       | UI style `col` or `row`
+| `large`						| `false` 					  | Need to use larger experience ?

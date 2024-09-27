@@ -5,19 +5,33 @@ div.ruuvi-api-sensors {
 div.ruuvi-api-sensors.row .sensor {
   margin-top: 8px;
 }
+div.ruuvi-api-sensors.row .sensor.large {
+  font-size: 32px;
+}
 div.ruuvi-api-sensors.row .name {
   width: 200px;
   text-align: left;
 }
+div.ruuvi-api-sensors.row .name.large {
+  width: auto;
+}
 div.ruuvi-api-sensors.row .icon {
   margin-right: 10px;
 }
-div.ruuvi-api-sensors.row .icon2 {
+div.ruuvi-api-sensors.row .battery-empty-icon {
   margin-left: 10px;
+  color: #ff6666;
+  font-size: 16px;
+}
+div.ruuvi-api-sensors.row .battery-empty-icon.large {
+  font-size: 24px;
 }
 div.ruuvi-api-sensors.row .date {
   font-size: 16px;
   text-align: left;
+}
+div.ruuvi-api-sensors.row .date.large {
+  font-size: 32px;
 }
 div.ruuvi-api-sensors.row .measurement {
   width: 100px;
@@ -27,6 +41,12 @@ div.ruuvi-api-sensors.row .measurement {
 }
 div.ruuvi-api-sensors.row .measurement.wide {
   width: 136px;
+}
+div.ruuvi-api-sensors.row .measurement.large {
+  width: 180px;
+}
+div.ruuvi-api-sensors.row .measurement.large.wide {
+  width: 200px;
 }
 div.ruuvi-api-sensors.row .paddingTop {
   padding-top: 8px;
@@ -60,13 +80,18 @@ div.ruuvi-api-sensors.col div.sensor div.measurement.smallFont {
 div.ruuvi-api-sensors.col div.sensor div.measurement span.icon {
   margin-right: 8px;
 }
-div.ruuvi-api-sensors.col div.sensor div.measurement span.icon2 {
-  margin-left: 8px;
-}
 div.ruuvi-api-sensors.col div.sensor div.measurement.large {
   font-size: 32px;
 }
 div.ruuvi-api-sensors.col div.sensor div.measurement.large.smallFont {
+  font-size: 24px;
+}
+div.ruuvi-api-sensors.col div.sensor div.measurement span.battery-empty-icon {
+  margin-left: 8px;
+  color: #ff6666;
+  font-size: 16px;
+}
+div.ruuvi-api-sensors.col div.sensor div.measurement span.battery-empty-icon.large {
   font-size: 24px;
 }
 div.ruuvi-api-sensors.col div.sensor.large {
