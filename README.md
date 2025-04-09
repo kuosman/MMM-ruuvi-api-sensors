@@ -33,7 +33,8 @@ modules: [{
         token: '<TOKEN>',
         negativeColor: '#4800FF',
         highlightNegative: true,
-        uiStyle: 'col'
+        uiStyle: 'col',
+        hideNotTodayMeasurement: false
 	}
 }]
 ````
@@ -56,4 +57,5 @@ The following properties can be configured:
 | `negativeColor`               | `#4800FF`                   | Highlight negative value this color
 | `highlightNegative`           | `true`                      | Higlight negative measurements true/false
 | `uiStyle`                     | `col`                       | UI style `col` or `row`
-| `large`						| `false` 					  | Need to use larger experience ?
+| `large`						| `false` 					  | Need to use larger experience  true/false
+| `hideNotTodayMeasurement`     | `false`                     | Hide not today measurement  true/false

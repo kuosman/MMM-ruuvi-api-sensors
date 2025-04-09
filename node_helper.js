@@ -306,7 +306,6 @@ module.exports = NodeHelper.create({
                             const latestMeasurement = sensor.measurements[0];
                             const hexData = latestMeasurement.data;
                             const parsed = self._parseData(hexData);
-                            console.log(sensor.name, parsed);
 
                             const time = new Date(latestMeasurement.timestamp);
 
@@ -319,6 +318,7 @@ module.exports = NodeHelper.create({
                                 pressure: parsed.pressure,
                                 temperature: parsed.temperature,
                                 battery: parsed.battery,
+                                isTodayMeasurement: moment(time * 1000).isSame(moment(), 'day')
                             };
                             sensors.push(s);
                         });

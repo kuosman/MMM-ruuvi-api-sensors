@@ -22,6 +22,7 @@ Module.register('MMM-ruuvi-api-sensors', {
         highlightNegative: true,
         uiStyle: 'col', // col or row style
         large: false,
+        hideNotTodayMeasurement: false
     },
 
     sensorsData: null,
@@ -131,6 +132,7 @@ Module.register('MMM-ruuvi-api-sensors', {
         const measurementClass =
             'measurement' + (self.config.large ? ' large' : '');
         self.sensorsData.forEach((sensor, index) => {
+            if (self.config.hideNotTodayMeasurement && !sensor.isTodayMeasurement) return;
             const sensorName =
                 '<div class="' +
                 measurementClass +
@@ -241,6 +243,7 @@ Module.register('MMM-ruuvi-api-sensors', {
             '"></i></span>';
 
         self.sensorsData.forEach((sensor) => {
+            if (self.config.hideNotTodayMeasurement && !sensor.isTodayMeasurement) return;
             const sensorName =
                 '<div class="name ' +
                 (self.config.large ? 'large' : '') +
