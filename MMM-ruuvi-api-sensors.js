@@ -131,8 +131,10 @@ Module.register('MMM-ruuvi-api-sensors', {
         const sensorHTMLs = [];
         const measurementClass =
             'measurement' + (self.config.large ? ' large' : '');
+        let counter = 0;
         self.sensorsData.forEach((sensor, index) => {
             if (self.config.hideNotTodayMeasurement && !sensor.isTodayMeasurement) return;
+
             const sensorName =
                 '<div class="' +
                 measurementClass +
@@ -177,11 +179,12 @@ Module.register('MMM-ruuvi-api-sensors', {
             var sensorHTML = document.createElement('div');
             const sensorClass = 'sensor' + (self.config.large ? ' large' : '');
             sensorHTML.className =
-                sensorClass + ((index + 1) % 2 === 0 ? ' marginLeft' : '');
+                sensorClass + ((counter + 1) % 2 === 0 ? ' marginLeft' : '');
 
             sensorHTML.innerHTML =
                 sensorName + time + temperature + humitidy + pressure;
             sensorHTMLs.push(sensorHTML);
+            counter++;
         });
 
         for (var i = 0; i < sensorHTMLs.length; i += 2) {
