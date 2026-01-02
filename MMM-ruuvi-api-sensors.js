@@ -132,6 +132,7 @@ Module.register('MMM-ruuvi-api-sensors', {
         const measurementClass =
             'measurement' + (self.config.large ? ' large' : '');
         let counter = 0;
+        console.log(self.sensorsData);
         self.sensorsData.forEach((sensor, index) => {
             if (self.config.hideNotTodayMeasurement && !sensor.isTodayMeasurement) return;
 
@@ -139,7 +140,7 @@ Module.register('MMM-ruuvi-api-sensors', {
                 '<div class="' +
                 measurementClass +
                 ' bright">' +
-                (sensor.battery > self.batteryLimit
+                (sensor.isRuuviAir || (sensor.batteryVoltage > self.batteryLimit)
                     ? sensor.name
                     : sensor.name + batteryEmptyIcon) +
                 '</div>';
@@ -147,7 +148,8 @@ Module.register('MMM-ruuvi-api-sensors', {
                 '<div class="' +
                 measurementClass +
                 ' smallFont">' +
-                sensor.time +
+                sensor.timestampString
+                +
                 '</div>';
             const temperature =
                 '<div class="' +
