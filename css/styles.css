@@ -1,102 +1,162 @@
-div.ruuvi-api-sensors {
-  /* Row styles */
-  /* Column styles */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:wght@400;600&display=swap");
+div.MMM-ruuvi-api-sensors {
+  font-family: "Open Sans", Arial, sans-serif;
 }
-div.ruuvi-api-sensors.row .sensor {
-  margin-top: 8px;
+div.MMM-ruuvi-api-sensors .balanced-blink {
+  animation: balancedBlink 2.2s ease-in-out infinite;
 }
-div.ruuvi-api-sensors.row .sensor.large {
-  font-size: 32px;
-  margin-top: 16px;
+@keyframes balancedBlink {
+  0% {
+    opacity: 0.9;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.25));
+  }
+  50% {
+    opacity: 0.45;
+    filter: drop-shadow(0 0 7px rgba(255, 255, 255, 0.55));
+  }
+  100% {
+    opacity: 0.9;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.25));
+  }
 }
-div.ruuvi-api-sensors.row .name {
-  width: 200px;
-  text-align: left;
+div.MMM-ruuvi-api-sensors .wrapper {
+  max-width: 1200px;
+  box-sizing: border-box;
 }
-div.ruuvi-api-sensors.row .name.large {
-  width: auto;
-  font-size: 32px;
+div.MMM-ruuvi-api-sensors .stage {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+  align-content: start;
+  justify-content: start;
+  box-sizing: border-box;
 }
-div.ruuvi-api-sensors.row .icon {
-  margin-right: 10px;
+div.MMM-ruuvi-api-sensors .card {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
+  min-height: 160px;
 }
-div.ruuvi-api-sensors.row .battery-empty-icon {
-  margin-left: 10px;
-  color: #ff6666;
-  font-size: 16px;
+div.MMM-ruuvi-api-sensors .card .title {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #ffffff;
 }
-div.ruuvi-api-sensors.row .battery-empty-icon.large {
-  font-size: 24px;
+div.MMM-ruuvi-api-sensors .card .battery-icon {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 20px;
+  color: #ff5252;
+  opacity: 0.9;
 }
-div.ruuvi-api-sensors.row .date {
-  font-size: 16px;
-  text-align: left;
-}
-div.ruuvi-api-sensors.row .date.large {
-  font-size: 24px;
-}
-div.ruuvi-api-sensors.row .measurement {
-  width: 100px;
-  padding: 4px;
-  display: inline-table;
-  text-align: left;
-}
-div.ruuvi-api-sensors.row .measurement.wide {
-  width: 136px;
-}
-div.ruuvi-api-sensors.row .measurement.large {
-  width: 180px;
-  font-size: 32px;
-}
-div.ruuvi-api-sensors.row .measurement.large.wide {
-  width: 200px;
-}
-div.ruuvi-api-sensors.row .paddingTop {
-  padding-top: 8px;
-}
-div.ruuvi-api-sensors.col div.sensors-container {
+div.MMM-ruuvi-api-sensors .big {
   display: flex;
-  width: 360px;
+  align-items: center;
+  gap: 8px;
+}
+div.MMM-ruuvi-api-sensors .big .value {
+  font-family: "Montserrat", "Open Sans", sans-serif;
+  font-weight: 800;
+  font-size: 48px;
+  line-height: 1;
+  color: #ffffff;
+}
+div.MMM-ruuvi-api-sensors .big .unit {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.78);
+}
+div.MMM-ruuvi-api-sensors .label-small {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.78);
+  margin-top: 6px;
+}
+div.MMM-ruuvi-api-sensors .aq-wrapper {
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+div.MMM-ruuvi-api-sensors .aq-score {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+div.MMM-ruuvi-api-sensors .aq-score .score {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 48px;
+  color: #ffffff;
+}
+div.MMM-ruuvi-api-sensors .aq-score .max {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+}
+div.MMM-ruuvi-api-sensors .progress-track {
   margin-top: 8px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  position: relative;
+  overflow: visible;
 }
-div.ruuvi-api-sensors.col div.sensors-container.large {
-  width: auto;
+div.MMM-ruuvi-api-sensors .progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 6px;
+  transition: width 700ms ease, background 300ms ease;
+  position: relative;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
-div.ruuvi-api-sensors.col div.sensor {
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  width: 180px;
+div.MMM-ruuvi-api-sensors .progress-dot {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.45);
+  transition: left 700ms ease, box-shadow 300ms ease, background 300ms ease;
+  left: 0%;
 }
-div.ruuvi-api-sensors.col div.sensor.noborder {
-  border: none;
+div.MMM-ruuvi-api-sensors .rows {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 30px;
+  margin-top: 12px;
 }
-div.ruuvi-api-sensors.col div.sensor.marginLeft {
-  margin-left: 8px;
+div.MMM-ruuvi-api-sensors .row {
+  width: 45%;
+  min-width: 120px;
+  font-size: 13px;
 }
-div.ruuvi-api-sensors.col div.sensor div.measurement {
-  padding: 4px;
-  text-align: center;
-}
-div.ruuvi-api-sensors.col div.sensor div.measurement.smallFont {
+div.MMM-ruuvi-api-sensors .row .val {
+  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
   font-size: 16px;
+  color: #ffffff;
 }
-div.ruuvi-api-sensors.col div.sensor div.measurement span.icon {
-  margin-right: 8px;
+div.MMM-ruuvi-api-sensors .row .name {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.78);
+  margin-top: 4px;
 }
-div.ruuvi-api-sensors.col div.sensor div.measurement.large {
-  font-size: 32px;
+div.MMM-ruuvi-api-sensors .timestamp {
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 13px;
 }
-div.ruuvi-api-sensors.col div.sensor div.measurement.large.smallFont {
-  font-size: 24px;
-}
-div.ruuvi-api-sensors.col div.sensor div.measurement span.battery-empty-icon {
-  margin-left: 8px;
-  color: #ff6666;
-  font-size: 16px;
-}
-div.ruuvi-api-sensors.col div.sensor div.measurement span.battery-empty-icon.large {
-  font-size: 24px;
-}
-div.ruuvi-api-sensors.col div.sensor.large {
-  width: 320px;
+@media (max-width: 700px) {
+  div.MMM-ruuvi-api-sensors .stage {
+    grid-template-columns: 1fr;
+    padding: 12px;
+    gap: 12px;
+  }
+  div.MMM-ruuvi-api-sensors .card {
+    width: 100%;
+  }
 }/*# sourceMappingURL=styles.css.map */

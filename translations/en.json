@@ -1,5 +1,13 @@
 {
-    "configEmpty": "Please setup config for module: ",
+    "configEmpty": "Set in the config file for the module: ",
     "loading": "Loading...",
-    "errorGettingData": "Error getting data "
+    "errorGettingData": "Error fetching data",
+    "temperature": "Temperature",
+    "humidity": "Relative humidity",
+    "pressure": "Air pressure",
+    "aqi": "Air quality",
+    "co2": "CO₂",
+    "pm25": "PM2.5",
+    "voc": "VOC index",
+    "nox": "NOx index"
 }

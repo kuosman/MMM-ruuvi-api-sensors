@@ -1,5 +1,13 @@
 {
     "configEmpty": "Aseta config-tiedostoon, modulille: ",
     "loading": "Ladataan...",
-    "errorGettingData": "Virhe haettaessa dataa"
+    "errorGettingData": "Virhe haettaessa dataa",
+    "temperature": "Lämpötila",
+    "humidity": "Suht. ilmankosteus",
+    "pressure": "Ilmanpaine",
+    "aqi": "Ilmanlaatu",
+    "co2": "CO₂",
+    "pm25": "PM2.5",
+    "voc": "VOC-indeksi",
+    "nox": "NOx-indeksi"
 }

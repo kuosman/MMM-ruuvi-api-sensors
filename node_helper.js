@@ -63,18 +63,13 @@ module.exports = NodeHelper.create({
                     const data = JSON.parse(body);
                     let sensors = [];
                     if (data.result === 'success') {
-                        sensors = parseGatewayResponse(data);
-                        sensors.sort(function (a, b) {
-                            var x = a.name.toLowerCase();
-                            var y = b.name.toLowerCase();
-                            return x < y ? -1 : x > y ? 1 : 0;
-                        });
+                        parseGatewayResponse(data);
                     }
 
                     self.sendSocketNotification(
                         'MMM_RUUVI_API_SENSORS_SENSORS_RESPONSE',
                         {
-                            data: sensors,
+                            data: data.data.sensors,
                             identifier: identifier,
                         }
                     );

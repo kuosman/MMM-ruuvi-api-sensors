@@ -5,13 +5,7 @@ The `MMM-ruuvi-api-sensors` module fetches Ruuvi sensors data from User API (htt
 
 ## Screenshot
 
-### Col style (default)
-
-![Ruuvi api sensors screenshot, col style](screenshot_col.png)
-
-### Row style
-
-![Ruuvi api sensors screenshot, row style](screenshot_row.png)
+![Ruuvi api sensors screenshot](screenshot.png)
 
 ## Using the module
 
@@ -24,17 +18,11 @@ modules: [{
 	position: "top_right",
 	header: "Ruuvi measurements",
 	config: {
-		temperatureIcon: 'temperature-half',
-        pressureIcon: 'wind',
-        humidityIcon: 'droplet',
-        batteryEmptyIcon: 'battery-half',
         updateInterval: 5 * 1000 * 60, // every 5 minutes
         apiUrl: 'https://network.ruuvi.com',
         token: '<TOKEN>',
-        negativeColor: '#4800FF',
-        highlightNegative: true,
-        uiStyle: 'col',
-        hideNotTodayMeasurement: false
+        width: 800,
+        cardBackground: ''
 	}
 }]
 ````
@@ -46,16 +34,10 @@ The following properties can be configured:
 
 | Option                       	| Default value               | Description
 | -----------------------------	| --------------------------- | -----------
-| `temperatureIcon`			    | `temperature-half`          | Temperature icon. See others: https://fontawesome.com/icons?d=gallery
-| `pressureIcon`				| `wind`                      | Pressure icon. See others: https://fontawesome.com/icons?d=gallery
-| `humidityIcon`				| `droplet`                   | Humidity icon. See others: https://fontawesome.com/icons?d=gallery
-| `batteryEmptyIcon`			| `battery-half`              | Battery empty icon. See others: https://fontawesome.com/icons?d=gallery
 | `updateInterval`				| `30000`                     | Update interval in milliseconds. Limited minumum value for 1 minute because API blocks faster updates.
 | `apiUrl`						| `https://network.ruuvi.com` | Api url
 | `token`                       |                             | **Necessary** own token, get it: <br>- Register user or reset token: Send POST message with following body ```{"email": "your@email.com"}``` to `https://network.ruuvi.com/register`<br>- Verify account: Send GET message with `token` parameter to `https://network.ruuvi.com/verify?token=<TOKEN IN YOUR EMAIL>`<br>- When verified account you get response JSON where your acces token is<br><br>read more: https://docs.ruuvi.com/communication/cloud/user-api
-
-| `negativeColor`               | `#4800FF`                   | Highlight negative value this color
-| `highlightNegative`           | `true`                      | Higlight negative measurements true/false
-| `uiStyle`                     | `col`                       | UI style `col` or `row`
+| `width`                       | `800`                       | wrapper width, if you want cards to one col decrease value, if you want more than 2 cols increase value
+| `cardBackGround`              |                             | card bacground, empty string is transparent. For example gray gradient: `linear-gradient(180deg, #3b3b3b 0%, #2f2f2f 100%)`
 | `large`						| `false` 					  | Need to use larger experience  true/false
 | `hideNotTodayMeasurement`     | `false`                     | Hide not today measurement  true/false
