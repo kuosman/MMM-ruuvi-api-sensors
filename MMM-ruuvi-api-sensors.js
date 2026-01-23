@@ -108,7 +108,7 @@ Module.register('MMM-ruuvi-api-sensors', {
     _temperatureCard: function(sensor){
         const self = this;
 
-        const batteryEmpty = self._isBatteryLow(sensor.measurement.battery, sensor.mearurement.temperature) ? `<div class="battery-icon balanced-blink">
+        const batteryEmpty = self._isBatteryLow(sensor.measurement.battery, sensor.measurement.temperature) ? `<div class="battery-icon balanced-blink">
                     <i class="fa-solid fa-battery-quarter"></i>
                 </div>`: ``;
 
