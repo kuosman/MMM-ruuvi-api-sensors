@@ -11,20 +11,12 @@
 Module.register('MMM-ruuvi-api-sensors', {
     // Default module config.
     defaults: {
-        temperatureIcon: 'temperature-half', // See free icons: https://fontawesome.com/icons?d=gallery
-        pressureIcon: 'wind', // See free icons: https://fontawesome.com/icons?d=gallery
-        humidityIcon: 'droplet', // See free icons: https://fontawesome.com/icons?d=gallery
-        batteryEmptyIcon: 'battery-half', // See free icons: https://fontawesome.com/icons?d=gallery
         updateInterval: 5 * 1000 * 60, // every 5 minutes
         apiUrl: 'https://network.ruuvi.com',
         token: '',
-        negativeColor: '#4800FF',
-        highlightNegative: true,
-        uiStyle: 'col', // col or row style
-        large: false,
-        hideNotTodayMeasurement: false
+        width: 800,
+        cardBackground: ''
     },
-
     sensorsData: null,
     updateTimer: null,
     batteryLimit: 2420, // if below this value, show battery empty warning,
@@ -56,20 +48,6 @@ Module.register('MMM-ruuvi-api-sensors', {
     },
 
     /**
-     * Gets measurement value HTML style
-     * @private
-     * @function _getMeasurementValueStyle
-     * @param {number} value
-     * @returns {string} style
-     */
-    _getMeasurementValueStyle: function (value) {
-        const self = this;
-        if (value < 0 && self.config.highlightNegative) {
-            return 'style="color:' + self.config.negativeColor + ';"';
-        } else return '';
-    },
-
-    /**
      * Format decimal number
      * @private
      * @function _formatDecimal
@@ -90,215 +68,121 @@ Module.register('MMM-ruuvi-api-sensors', {
     },
 
     /**
-     * Gets column dom.
-     * @returns {object} HTML wrapper
+     * Get AQI corresponding grayvalues
+     * @private
+     * @param {number} aqi
+     * @returns {object} light and dark colors
      */
-    getColDom: function () {
-        const self = this;
-        var wrapper = document.createElement('div');
-
-        if (!self.config.sensor === null) {
-            wrapper.innerHTML = this.translate('configEmpty') + this.name + '.';
-            wrapper.className = 'ruuvi-api-sensors col dimmed light small';
-            return wrapper;
-        }
-
-        if (self.sensorsData === null) {
-            wrapper.innerHTML = this.translate('loading');
-            wrapper.className = 'ruuvi-api-sensors col dimmed light small';
-            return wrapper;
-        }
-        wrapper.className = 'ruuvi-api-sensors col light small';
-
-        var temperatureIcon =
-            '<span class="icon"><i class="fas fa-' +
-            self.config.temperatureIcon +
-            '"></i></span>';
-        var pressureIcon =
-            '<span class="icon"><i class="fas fa-' +
-            self.config.pressureIcon +
-            '"></i></span>';
-        var humidityIcon =
-            '<span class="icon"><i class="fas fa-' +
-            self.config.humidityIcon +
-            '"></i></span>';
-
-        var batteryEmptyIcon =
-            '<span class="battery-empty-icon ' + (self.config.large ? 'large' : '') + '"><i class="fas fa-' +
-            self.config.batteryEmptyIcon +
-            '"></i></span>';
-
-        const sensorHTMLs = [];
-        const measurementClass =
-            'measurement' + (self.config.large ? ' large' : '');
-        let counter = 0;
-
-        self.sensorsData.forEach((sensor, index) => {
-            if (self.config.hideNotTodayMeasurement && !sensor.isTodayMeasurement) return;
-
-            const sensorName =
-                '<div class="' +
-                measurementClass +
-                ' bright">' +
-                (sensor.isRuuviAir || (sensor.batteryVoltage > self.batteryLimit)
-                    ? sensor.name
-                    : sensor.name + batteryEmptyIcon) +
-                '</div>';
-            const time =
-                '<div class="' +
-                measurementClass +
-                ' smallFont">' +
-                sensor.timestampString
-                +
-                '</div>';
-            const temperature =
-                '<div class="' +
-                measurementClass +
-                ' bright" ' +
-                self._getMeasurementValueStyle(sensor.temperature) +
-                '>' +
-                temperatureIcon +
-                self._formatDecimal(sensor.temperature, 1) +
-                ' &#8451;</div>';
-            const humitidy =
-                '<div class="' +
-                measurementClass +
-                ' bright" ' +
-                self._getMeasurementValueStyle(sensor.humidity) +
-                '>' +
-                humidityIcon +
-                self._formatDecimal(sensor.humidity, 1) +
-                ' %</div>';
-            const pressure =
-                '<div class="' +
-                measurementClass +
-                ' wide bright" ' +
-                self._getMeasurementValueStyle(sensor.pressure) +
-                '>' +
-                pressureIcon +
-                self._formatDecimal(sensor.pressure / 100, 1) +
-                ' hPa</div>';
-            var sensorHTML = document.createElement('div');
-            const sensorClass = 'sensor' + (self.config.large ? ' large' : '');
-            sensorHTML.className =
-                sensorClass + ((counter + 1) % 2 === 0 ? ' marginLeft' : '');
-
-            sensorHTML.innerHTML =
-                sensorName + time + temperature + humitidy + pressure;
-            sensorHTMLs.push(sensorHTML);
-            counter++;
-        });
-
-        for (var i = 0; i < sensorHTMLs.length; i += 2) {
-            var sensorsContainer = document.createElement('div');
-            sensorsContainer.className =
-                'sensors-container' + (self.config.large ? ' large' : '');
-            sensorsContainer.appendChild(sensorHTMLs[i]);
-            if (sensorHTMLs.length - 1 >= i + 1) {
-                sensorsContainer.appendChild(sensorHTMLs[i + 1]);
-            } else {
-                var sensorHTML = document.createElement('div');
-                sensorHTML.className = 'sensor marginLeft noborder';
-                sensorsContainer.appendChild(sensorHTML);
-            }
-            wrapper.appendChild(sensorsContainer);
-        }
-
-        return wrapper;
+    _aqiToGray(aqi) {
+        const lightL = Math.round(88 - (100 - aqi) * 0.7);
+        const darkL = Math.round(40 - (100 - aqi) * 0.22);
+        const light = Math.max(8, Math.min(95, lightL));
+        const dark = Math.max(8, Math.min(95, darkL));
+        return {
+            light: `hsl(0 0% ${light}%)`,
+            dark: `hsl(0 0% ${dark}%)`,
+        };
     },
+
     /**
-     * Gets row dom.
-     * @returns {object} HTML wrapper
+     * Returns temperature card
+     * @private
+     * @param {object} sensor
+     * @returns {string} html
      */
-    getRowDom: function () {
+    _temperatureCard: function(sensor){
         const self = this;
-        var wrapper = document.createElement('div');
 
-        if (!self.config.sensor === null) {
-            wrapper.innerHTML = this.translate('configEmpty') + this.name + '.';
-            wrapper.className = 'ruuvi-api-sensors row dimmed light small';
-            return wrapper;
-        }
+        const batteryEmpty = sensor.measurement.battery < self.batteryLimit ? `<div class="battery-icon balanced-blink">
+                    <i class="fa-solid fa-battery-quarter"></i>
+                </div>`: ``;
 
-        if (self.sensorsData === null) {
-            wrapper.innerHTML = this.translate('loading');
-            wrapper.className = 'ruuvi-api-sensors row dimmed light small';
-            return wrapper;
-        }
-        wrapper.className = 'ruuvi-api-sensors row light small';
+        return `${batteryEmpty}
+                <div class="title">${sensor.name}</div>
+                    <div class="big">
+                        <div class="value">${self._formatDecimal(sensor.measurement.temperature)}</div>
+                        <div class="unit">
+                            °C<br /><span class="label-small">${self.translate('temperature')}</span>
+                        </div>
+                    </div>
+                    <div class="rows">
+                        <div class="row">
+                            <div class="val">${self._formatDecimal(sensor.measurement.humidity)} %</div>
+                            <div class="name">${self.translate('humidity')}</div>
+                        </div>
+                        <div class="row">
+                            <div class="val">
+                                ${self._formatDecimal(sensor.measurement.pressure/100)} hPa
+                            </div>
+                            <div class="name">${self.translate('pressure')}</div>
+                        </div>
+                    </div>
+                    <div class="timestamp">
+                        ${sensor.measurement.timestampString}
+                    </div>`;
+    },
 
-        var temperatureIcon =
-            '<span class="icon"><i class="fas fa-' +
-            self.config.temperatureIcon +
-            '"></i></span>';
-        var pressureIcon =
-            '<span class="icon"><i class="fas fa-' +
-            self.config.pressureIcon +
-            '"></i></span>';
-        var humidityIcon =
-            '<span class="icon"><i class="fas fa-' +
-            self.config.humidityIcon +
-            '"></i></span>';
+    /**
+     * Returns ari card
+     * @private
+     * @param {object} sensor
+     * @returns {string} html
+     */
+    _airCard: function(sensor) {
+        const self = this;
+        const g = self._aqiToGray(sensor.measurement.aqi);
+        return `<div class="title">${sensor.name}</div>
 
-        var batteryEmptyIcon =
-            '<span class="battery-empty-icon ' +
-            (self.config.large ? 'large' : '') +
-            '"><i class="fas fa-' +
-            self.config.batteryEmptyIcon +
-            '"></i></span>';
+                    <div class="aq-score">
+                        <div class="score">${self._formatDecimal(sensor.measurement.aqi, 0)}</div>
+                        <div class="max">
+                            /100<br /><span class="label-small"
+                                >${self.translate('aqi')}</span
+                            >
+                        </div>
+                    </div>
 
-        self.sensorsData.forEach((sensor) => {
-            if (self.config.hideNotTodayMeasurement && !sensor.isTodayMeasurement) return;
-            const sensorName =
-                '<div class="name ' +
-                (self.config.large ? 'large' : '') +
-                ' bright">' +
-                (sensor.battery > self.batteryLimit
-                    ? sensor.name
-                    : sensor.name + batteryEmptyIcon) +
-                '</div>';
-            const time =
-                '<div class="date ' +
-                (self.config.large ? 'large' : '') +
-                '">' +
-                sensor.time +
-                '</div>';
-            const temperature =
-                '<div class="measurement ' +
-                (self.config.large ? 'large' : '') +
-                ' bright" ' +
-                self._getMeasurementValueStyle(sensor.temperature) +
-                '>' +
-                temperatureIcon +
-                self._formatDecimal(sensor.temperature, 1) +
-                ' &#8451;</div>';
-            const humitidy =
-                '<div class="measurement ' +
-                (self.config.large ? 'large' : '') +
-                ' bright" ' +
-                self._getMeasurementValueStyle(sensor.humidity) +
-                '>' +
-                humidityIcon +
-                self._formatDecimal(sensor.humidity, 1) +
-                ' %</div>';
-            const pressure =
-                '<div class="measurement ' +
-                (self.config.large ? 'large' : '') +
-                ' wide bright" ' +
-                self._getMeasurementValueStyle(sensor.pressure) +
-                '>' +
-                pressureIcon +
-                self._formatDecimal(sensor.pressure / 100, 1) +
-                ' hPa</div>';
-            var sensorHTML = document.createElement('div');
-            sensorHTML.className =
-                'sensor' + (self.config.large ? ' large' : '');
-            sensorHTML.innerHTML =
-                sensorName + time + temperature + humitidy + pressure;
-            wrapper.appendChild(sensorHTML);
-        });
+                    <div class="aq-wrapper">
+                        <div class="progress-track" aria-hidden="true">
+                            <div class="progress-fill" style="width: ${sensor.measurement.aqi}%; background: linear-gradient(90deg, ${g.light}, ${g.dark})"></div>
+                            <div class="progress-dot" style="left: ${sensor.measurement.aqi}%;"></div>
+                        </div>
+                    </div>
 
-        return wrapper;
+                    <div class="rows">
+                        <div class="row">
+                            <div class="val">${self._formatDecimal(sensor.measurement.co2, 0)} ppm</div>
+                            <div class="name">${self.translate('co2')}</div>
+                        </div>
+                        <div class="row">
+                            <div class="val">${self._formatDecimal(sensor.measurement.pm25)} µg/m³</div>
+                            <div class="name">${self.translate('pm25')}</div>
+                        </div>
+                        <div class="row">
+                            <div class="val">${self._formatDecimal(sensor.measurement.voc, 0)}</div>
+                            <div class="name">${self.translate('voc')}</div>
+                        </div>
+                        <div class="row">
+                            <div class="val">${self._formatDecimal(sensor.measurement.nox, 0)}</div>
+                            <div class="name">${self.translate('nox')}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="val">${self._formatDecimal(sensor.measurement.temperature)} °C</div>
+                            <div class="name">${self.translate('temperature')}</div>
+                        </div>
+                        <div class="row">
+                            <div class="val">${self._formatDecimal(sensor.measurement.humidity)} %</div>
+                            <div class="name">${self.translate('humidity')}</div>
+                        </div>
+
+                        <div class="row" style="width: 100%">
+                            <div class="val">${self._formatDecimal(sensor.measurement.pressure/100)} hPa</div>
+                            <div class="name">${self.translate('pressure')}</div>
+                        </div>
+                    </div>
+
+                    <div class="timestamp>${sensor.measurement.timestampString}</div>`;
     },
 
     /**
@@ -309,11 +193,42 @@ Module.register('MMM-ruuvi-api-sensors', {
      */
     getDom: function () {
         const self = this;
-        if (self.config.uiStyle === 'row') {
-            return self.getRowDom();
-        } else {
-            return self.getColDom();
+        var wrapper = document.createElement('div');
+        wrapper.className = 'wrapper';
+        wrapper.style.width = self.config.width + 'px';
+        if (!self.config === null) {
+            wrapper.innerHTML = this.translate('configEmpty') + this.name + '.';
+            wrapper.className = 'row dimmed light small';
+            return wrapper;
         }
+
+        if (self.sensorsData === null) {
+            wrapper.innerHTML = this.translate('loading');
+            wrapper.className = 'row dimmed light small';
+            return wrapper;
+        }
+        var stage = document.createElement('div');
+        stage.className = 'stage';
+
+        self.sensorsData.forEach((sensor) => {
+            var sensorCard = null;
+
+            if(sensor.measurement.aqi) {
+                sensorCard = document.createElement('div');
+                sensorCard.className = 'card';
+                sensorCard.innerHTML = self._airCard(sensor);
+                sensorCard.style.background = self.config.cardBackground;
+            } else {
+                sensorCard = document.createElement('div');
+                sensorCard.className = 'card';
+                sensorCard.innerHTML = self._temperatureCard(sensor);
+                sensorCard.style.background = self.config.cardBackground;
+            }
+            if (sensorCard) stage.appendChild(sensorCard);
+        });
+
+        wrapper.appendChild(stage);
+        return wrapper;
     },
 
     /**
