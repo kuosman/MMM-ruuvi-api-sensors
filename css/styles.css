@@ -90,6 +90,7 @@ div.MMM-ruuvi-api-sensors .aq-score .score {
   font-weight: 800;
   font-size: 48px;
   color: #ffffff;
+  line-height: 1;
 }
 div.MMM-ruuvi-api-sensors .aq-score .max {
   color: rgba(255, 255, 255, 0.78);
