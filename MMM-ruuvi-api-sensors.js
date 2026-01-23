@@ -19,7 +19,6 @@ Module.register('MMM-ruuvi-api-sensors', {
     },
     sensorsData: null,
     updateTimer: null,
-    batteryLimit: 2420, // if below this value, show battery empty warning,
     identifier: Date.now(),
 
     /**
@@ -45,6 +44,22 @@ Module.register('MMM-ruuvi-api-sensors', {
             en: 'translations/en.json',
             fi: 'translations/fi.json',
         };
+    },
+
+    /**
+     * Is battery low
+     * @param {number} voltage
+     * @param {number} temperature
+     * @returns  {boolean}
+     */
+    _isBatteryLow: function isBatteryLow(voltage, temperature) {
+        if (temperature < -20) {
+            return voltage < 2000
+        } else if (temperature < 0) {
+            return voltage < 2300
+        } else {
+            return voltage < 2500
+        }
     },
 
     /**
@@ -93,7 +108,7 @@ Module.register('MMM-ruuvi-api-sensors', {
     _temperatureCard: function(sensor){
         const self = this;
 
-        const batteryEmpty = sensor.measurement.battery < self.batteryLimit ? `<div class="battery-icon balanced-blink">
+        const batteryEmpty = self._isBatteryLow(sensor.measurement.battery, sensor.mearurement.temperature) ? `<div class="battery-icon balanced-blink">
                     <i class="fa-solid fa-battery-quarter"></i>
                 </div>`: ``;
 
