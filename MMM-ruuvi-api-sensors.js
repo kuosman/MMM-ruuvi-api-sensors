@@ -15,7 +15,8 @@ Module.register('MMM-ruuvi-api-sensors', {
         apiUrl: 'https://network.ruuvi.com',
         token: '',
         width: 800,
-        cardBackground: ''
+        cardBackground: '',
+        showAqiColors: false
     },
     sensorsData: null,
     updateTimer: null,
@@ -230,7 +231,7 @@ Module.register('MMM-ruuvi-api-sensors', {
 
             if(sensor.measurement.aqi) {
                 sensorCard = document.createElement('div');
-                sensorCard.className = 'card';
+                sensorCard.className = self.config.showAqiColors ? 'card aqi_' + sensor.measurement.aqiText : 'card';
                 sensorCard.innerHTML = self._airCard(sensor);
                 sensorCard.style.background = self.config.cardBackground;
             } else {

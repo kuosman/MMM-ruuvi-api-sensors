@@ -55,6 +55,21 @@ div.MMM-ruuvi-api-sensors .card .battery-icon {
   color: #ff5252;
   opacity: 0.9;
 }
+div.MMM-ruuvi-api-sensors .card.aqi_excellent .aq-score .score {
+  color: #4ac9b8;
+}
+div.MMM-ruuvi-api-sensors .card.aqi_good .aq-score .score {
+  color: #95cd48;
+}
+div.MMM-ruuvi-api-sensors .card.aqi_moderate .aq-score .score {
+  color: #f7e13d;
+}
+div.MMM-ruuvi-api-sensors .card.aqi_poor .aq-score .score {
+  color: #f79c21;
+}
+div.MMM-ruuvi-api-sensors .card.aqi_very_poor .aq-score .score {
+  color: #ed5020;
+}
 div.MMM-ruuvi-api-sensors .big {
   display: flex;
   align-items: center;

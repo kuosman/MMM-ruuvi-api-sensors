@@ -68,6 +68,46 @@ div.MMM-ruuvi-api-sensors {
             color: #ff5252;
             opacity: 0.9;
         }
+
+        &.aqi_excellent {
+            .aq-score {
+                .score {
+                    color: #4ac9b8;
+                }
+            }
+        }
+
+        &.aqi_good {
+            .aq-score {
+                .score {
+                    color: #95cd48;
+                }
+            }
+        }
+
+        &.aqi_moderate {
+            .aq-score {
+                .score {
+                    color: #f7e13d;
+                }
+            }
+        }
+
+        &.aqi_poor {
+            .aq-score {
+                .score {
+                    color: #f79c21;
+                }
+            }
+        }
+
+        &.aqi_very_poor {
+            .aq-score {
+                .score {
+                    color: #ed5020;
+                }
+            }
+        }
     }
 
     .big {
