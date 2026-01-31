@@ -84,19 +84,34 @@ Module.register('MMM-ruuvi-api-sensors', {
     },
 
     /**
-     * Get AQI corresponding grayvalues
+     * Get AQI corresponding color values
      * @private
      * @param {number} aqi
+     * @param {string} aqiText
      * @returns {object} light and dark colors
      */
-    _aqiToGray(aqi) {
+    _aqiToColor(aqi, aqiText) {
+        const self = this;
+        const colorMap = {
+            excellent:  { light: "#7fe0d4", dark: "#4ac9b8" },
+            good:       { light: "#b7e27a", dark: "#95cd48" },
+            moderate:   { light: "#fff08a", dark: "#f7e13d" },
+            poor:       { light: "#fbc27a", dark: "#f79c21" },
+            very_poor:  { light: "#f58a6a", dark: "#ed5020" }
+        };
+
+        if (self.config.showAqiColors && aqiText && colorMap[aqiText]) {
+            return colorMap[aqiText];
+        }
+
         const lightL = Math.round(88 - (100 - aqi) * 0.7);
-        const darkL = Math.round(40 - (100 - aqi) * 0.22);
-        const light = Math.max(8, Math.min(95, lightL));
-        const dark = Math.max(8, Math.min(95, darkL));
+        const darkL  = Math.round(40 - (100 - aqi) * 0.22);
+        const light  = Math.max(8, Math.min(95, lightL));
+        const dark   = Math.max(8, Math.min(95, darkL));
+
         return {
             light: `hsl(0 0% ${light}%)`,
-            dark: `hsl(0 0% ${dark}%)`,
+            dark:  `hsl(0 0% ${dark}%)`,
         };
     },
 
@@ -146,7 +161,7 @@ Module.register('MMM-ruuvi-api-sensors', {
      */
     _airCard: function(sensor) {
         const self = this;
-        const g = self._aqiToGray(sensor.measurement.aqi);
+        const g = self._aqiToColor(sensor.measurement.aqi, sensor.measurement.aqiText);
         return `<div class="title">${sensor.name}</div>
 
                     <div class="aq-score">
@@ -198,7 +213,45 @@ Module.register('MMM-ruuvi-api-sensors', {
                         </div>
                     </div>
 
-                    <div class="timestamp>${sensor.measurement.timestampString}</div>`;
+                    <div class="timestamp">${sensor.measurement.timestampString}</div>`;
+    },
+
+    _getIdentifier: function(sensor) {
+        return 'sensor__' + sensor.sensor.replaceAll(":", "_");
+    },
+
+    _updateAqiBars: function () {
+        self.sensorsData.forEach((sensor) => {
+            if(sensor.measurement.aqi) {
+                var card = document.getElementById(this._getIdentifier(sensor));
+                const track = card.querySelector('.progress-track');
+                const fill = track.querySelector('.progress-fill');
+                const dot  = track.querySelector('.progress-dot');
+
+                const g = self._aqiToColor(sensor.measurement.aqi, sensor.measurement.aqiText);
+                fill.style.background = `linear-gradient(90deg, ${g.light}, ${g.dark})`;
+
+                // pakotetaan animaatio
+                requestAnimationFrame(() => {
+                    fill.style.width = sensor.measurement.aqi + "%";
+                    dot.style.left = sensor.measurement.aqi + "%";
+                });
+            }
+        });
+
+        const tracks = document.querySelectorAll(".progress-track");
+
+        tracks.forEach(track => {
+            const aqi = track.dataset.aqi;
+            const fill = track.querySelector(".progress-fill");
+            const dot = track.querySelector(".progress-dot");
+
+            // pakotetaan repaint
+            requestAnimationFrame(() => {
+                fill.style.width = aqi + "%";
+                dot.style.left = aqi + "%";
+            });
+        });
     },
 
     /**
@@ -228,14 +281,16 @@ Module.register('MMM-ruuvi-api-sensors', {
 
         self.sensorsData.forEach((sensor) => {
             var sensorCard = null;
-
             if(sensor.measurement.aqi) {
                 sensorCard = document.createElement('div');
+                sensorCard.id = self._getIdentifier(sensor);
+
                 sensorCard.className = self.config.showAqiColors ? 'card aqi_' + sensor.measurement.aqiText : 'card';
                 sensorCard.innerHTML = self._airCard(sensor);
                 sensorCard.style.background = self.config.cardBackground;
             } else {
                 sensorCard = document.createElement('div');
+                sensorCard.id = self._getIdentifier(sensor);
                 sensorCard.className = 'card';
                 sensorCard.innerHTML = self._temperatureCard(sensor);
                 sensorCard.style.background = self.config.cardBackground;
@@ -289,6 +344,7 @@ Module.register('MMM-ruuvi-api-sensors', {
     notificationReceived: function (notification) {
         if (notification === 'DOM_OBJECTS_CREATED') {
             this.scheduleNextFetch();
+            this._updateAqiBars();
         }
     },
 
@@ -307,6 +363,7 @@ Module.register('MMM-ruuvi-api-sensors', {
                 this.scheduleNextFetch();
                 this.sensorsData = payload.data;
                 this.updateDom();
+                this._updateAqiBars();
                 break;
         }
     },
