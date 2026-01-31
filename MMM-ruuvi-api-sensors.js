@@ -166,6 +166,8 @@ Module.register('MMM-ruuvi-api-sensors', {
                 const g = self._aqiToColor(sensor.measurement.aqi, sensor.measurement.aqiText);
                 card.querySelector('.aq-score .score').textContent = self._formatDecimal(sensor.measurement.aqi, 0);
 
+                card.className = self.config.showAqiColors ? 'card aqi_' + sensor.measurement.aqiText : 'card';
+
                 // Progress bar
                 const track = card.querySelector('.progress-track');
                 const fill = track.querySelector('.progress-fill');
