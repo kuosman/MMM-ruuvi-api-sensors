@@ -21,6 +21,7 @@ Module.register('MMM-ruuvi-api-sensors', {
     sensorsData: null,
     updateTimer: null,
     identifier: Date.now(),
+    domCreated: false,
 
     /**
      * Gets styles
@@ -131,19 +132,19 @@ Module.register('MMM-ruuvi-api-sensors', {
         return `${batteryEmpty}
                 <div class="title">${sensor.name}</div>
                     <div class="big">
-                        <div class="value">${self._formatDecimal(sensor.measurement.temperature)}</div>
+                        <div class="value">${self._formatDecimal(sensor.measurement.temperature, 0)}</div>
                         <div class="unit">
                             °C<br /><span class="label-small">${self.translate('temperature')}</span>
                         </div>
                     </div>
                     <div class="rows">
                         <div class="row">
-                            <div class="val">${self._formatDecimal(sensor.measurement.humidity)} %</div>
+                            <div class="val">${self._formatDecimal(sensor.measurement.humidity, 0)} %</div>
                             <div class="name">${self.translate('humidity')}</div>
                         </div>
                         <div class="row">
                             <div class="val">
-                                ${self._formatDecimal(sensor.measurement.pressure/100)} hPa
+                                ${self._formatDecimal(sensor.measurement.pressure/100, 0)} hPa
                             </div>
                             <div class="name">${self.translate('pressure')}</div>
                         </div>
@@ -151,6 +152,49 @@ Module.register('MMM-ruuvi-api-sensors', {
                     <div class="timestamp">
                         ${sensor.measurement.timestampString}
                     </div>`;
+    },
+
+    _updateCards: function(){
+        const self = this;
+
+        self.sensorsData.forEach((sensor) => {
+            const card = document.getElementById(self._getIdentifier(sensor));
+            if (!card) return;
+
+            if(sensor.measurement.aqi) {
+                // TEST ONLY sensor.measurement.aqi = Math.floor(Math.random() * 101);
+                const g = self._aqiToColor(sensor.measurement.aqi, sensor.measurement.aqiText);
+                card.querySelector('.aq-score .score').textContent = self._formatDecimal(sensor.measurement.aqi, 0);
+
+                // Progress bar
+                const track = card.querySelector('.progress-track');
+                const fill = track.querySelector('.progress-fill');
+                const dot  = track.querySelector('.progress-dot');
+
+                fill.style.background = `linear-gradient(90deg, ${g.light}, ${g.dark})`;
+
+                requestAnimationFrame(() => {
+                    fill.style.width = sensor.measurement.aqi + '%';
+                    dot.style.left = sensor.measurement.aqi + '%';
+                });
+
+                const rows = card.querySelectorAll('.rows .row .val');
+
+                rows[0].textContent = `${self._formatDecimal(sensor.measurement.co2, 0)} ppm`;
+                rows[1].textContent = `${self._formatDecimal(sensor.measurement.pm25, 1)} µg/m³`;
+                rows[2].textContent = self._formatDecimal(sensor.measurement.voc, 0);
+                rows[3].textContent = self._formatDecimal(sensor.measurement.nox, 0);
+                rows[4].textContent = `${self._formatDecimal(sensor.measurement.temperature, 1)} °C`;
+                rows[5].textContent = `${self._formatDecimal(sensor.measurement.humidity, 0)} %`;
+                rows[6].innerHTML   = `${self._formatDecimal(sensor.measurement.pressure/100)} hPa`;
+                card.querySelector('.timestamp').textContent = sensor.measurement.timestampString;
+            } else {
+                card.querySelector('.big .value').textContent = `${self._formatDecimal(sensor.measurement.temperature, 1)} °C`;
+                card.querySelector('.rows .row:nth-child(1) .val').textContent = `${self._formatDecimal(sensor.measurement.humidity, 0)} %`;
+                card.querySelector('.rows .row:nth-child(2) .val').innerHTML = `${self._formatDecimal(sensor.measurement.pressure/100)} hPa`;
+                card.querySelector('.timestamp').textContent = sensor.measurement.timestampString;
+            }
+        });
     },
 
     /**
@@ -186,7 +230,7 @@ Module.register('MMM-ruuvi-api-sensors', {
                             <div class="name">${self.translate('co2')}</div>
                         </div>
                         <div class="row">
-                            <div class="val">${self._formatDecimal(sensor.measurement.pm25)} µg/m³</div>
+                            <div class="val">${self._formatDecimal(sensor.measurement.pm25, 1)} µg/m³</div>
                             <div class="name">${self.translate('pm25')}</div>
                         </div>
                         <div class="row">
@@ -199,16 +243,16 @@ Module.register('MMM-ruuvi-api-sensors', {
                         </div>
 
                         <div class="row">
-                            <div class="val">${self._formatDecimal(sensor.measurement.temperature)} °C</div>
+                            <div class="val">${self._formatDecimal(sensor.measurement.temperature, 1)} °C</div>
                             <div class="name">${self.translate('temperature')}</div>
                         </div>
                         <div class="row">
-                            <div class="val">${self._formatDecimal(sensor.measurement.humidity)} %</div>
+                            <div class="val">${self._formatDecimal(sensor.measurement.humidity, 0)} %</div>
                             <div class="name">${self.translate('humidity')}</div>
                         </div>
 
                         <div class="row" style="width: 100%">
-                            <div class="val">${self._formatDecimal(sensor.measurement.pressure/100)} hPa</div>
+                            <div class="val">${self._formatDecimal(sensor.measurement.pressure/100, 0)} hPa</div>
                             <div class="name">${self.translate('pressure')}</div>
                         </div>
                     </div>
@@ -221,10 +265,18 @@ Module.register('MMM-ruuvi-api-sensors', {
     },
 
     _updateAqiBars: function () {
+        const self = this;
+        if (!self.sensorsData) return;
+
         self.sensorsData.forEach((sensor) => {
-            if(sensor.measurement.aqi) {
+            if (sensor.measurement.aqi) {
                 var card = document.getElementById(this._getIdentifier(sensor));
+
+                if (!card) return;
+
                 const track = card.querySelector('.progress-track');
+
+                if (!track) return;
                 const fill = track.querySelector('.progress-fill');
                 const dot  = track.querySelector('.progress-dot');
 
@@ -299,6 +351,7 @@ Module.register('MMM-ruuvi-api-sensors', {
         });
 
         wrapper.appendChild(stage);
+        self.domCreated = true;
         return wrapper;
     },
 
@@ -320,9 +373,7 @@ Module.register('MMM-ruuvi-api-sensors', {
         } else {
             clearTimeout(self.updateTimer);
             const delay =
-                self.config.updateInterval < 1000 * 60
-                    ? 1000 * 60
-                    : self.config.updateInterval;
+                self.config.updateInterval;
             self.updateTimer = setTimeout(function () {
                 self.sendSocketNotification(
                     'MMM_RUUVI_API_SENSORS_GET_SENSORS_DATA',
@@ -356,14 +407,19 @@ Module.register('MMM-ruuvi-api-sensors', {
      * @param {object} payload payload
      */
     socketNotificationReceived: function (notification, payload) {
-        if (payload.identifier !== this.identifier) return;
+        const self = this;
+        if (payload.identifier !== self.identifier) return;
 
         switch (notification) {
             case 'MMM_RUUVI_API_SENSORS_SENSORS_RESPONSE':
-                this.scheduleNextFetch();
-                this.sensorsData = payload.data;
-                this.updateDom();
-                this._updateAqiBars();
+                self.scheduleNextFetch();
+                self.sensorsData = payload.data;
+                if (!self.domCreated) {
+                    self.updateDom();
+                } else {
+                    self._updateCards();
+                }
+                setTimeout(() => self._updateAqiBars(), 50);
                 break;
         }
     },
